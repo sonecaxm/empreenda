@@ -1,25 +1,9 @@
 // Dados simulados de conversas e mensagens
 let conversas = [
-  {
-    id: 0,
-    nome: "ChatGPT Assistant",
-    avatar: "https://img.freepik.com/vetores-gratis/vetor-de-icone-de-cerebro-de-conexao-de-tecnologia-de-ia-no-conceito-roxo-de-transformacao-digital_53876-112219.jpg",
-    ultimaMensagem: "Olá! Como posso ajudá-lo hoje?",
-    hora: "15:00",
-    notificacoes: 0,
-    status: "online",
-    isChatGPT: true,
-    mensagens: [
-      {
-        id: 1,
-        texto: "Olá! Sou o assistente virtual do Tecnoplace. Posso ajudá-lo com informações sobre produtos, suporte técnico, dúvidas sobre compras e muito mais. Como posso ajudá-lo hoje?",
-        hora: "15:00",
-        enviada: false,
-        lida: true,
-        isChatGPT: true
-      }
-    ]
-  },
+  
+   
+
+  
   {
     id: 1,
     nome: "Felipe Moura Souza",
@@ -354,21 +338,28 @@ function enviarMensagem() {
     document.getElementById('mensagensArea').scrollTop = document.getElementById('mensagensArea').scrollHeight;
   }, 100);
 
-  // Verificar se é conversa com ChatGPT
-  if (conversaAtiva.isChatGPT) {
-    // Mostrar indicador de digitação
-    mostrarIndicadorDigitacao();
-    
-    // Chamar ChatGPT
-    setTimeout(() => {
-      chamarChatGPT(texto);
-    }, 1500);
-  } else {
-    // Simular resposta automática após 2 segundos para conversas normais
-    setTimeout(() => {
-      simularResposta();
-    }, 2000);
-  }
+    // Verificar se é conversa com ChatGPT
+    if (conversaAtiva.isChatGPT) {
+      // Tentar responder com palavras-chave primeiro
+      const respostaKeyword = verificarPalavrasChave(texto);
+      if (respostaKeyword) {
+        // Se houver uma resposta por palavra-chave, adiciona e encerra
+        adicionarRespostaChatGPT(respostaKeyword);
+        carregarConversas();
+        return; 
+      } else {
+        // Se não houver palavra-chave, chama a API do ChatGPT
+        mostrarIndicadorDigitacao();
+        setTimeout(() => {
+          chamarChatGPT(texto);
+        }, 1500);
+      }
+    } else {
+      // Simular resposta automática após 2 segundos para conversas normais
+      setTimeout(() => {
+        simularResposta();
+      }, 2000);
+    }
 
   // Atualizar lista de conversas
   carregarConversas();
@@ -493,7 +484,7 @@ function adicionarNovaConversa() {
   const novaConversa = {
     id: Date.now(),
     nome: "Novo Usuário",
-    avatar: "img/miguel.png",
+    avatar: "img/plinio.png",
     ultimaMensagem: "Olá! Gostei do seu produto.",
     hora: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
     notificacoes: 1,
@@ -526,6 +517,36 @@ setInterval(() => {
 }, 5000);
 
 // Configuração da API do ChatGPT
+const RESPOSTAS_AUTOMATICAS = {
+  "olá": "Olá! Como posso ajudar você hoje?",
+  "oi": "Oi! Em que posso ser útil?",
+  "tudo bem": "Tudo ótimo! E com você?",
+  "disponível": "Sim, o produto está disponível. Você gostaria de mais detalhes?",
+  "frete": "Para calcular o frete, preciso do seu CEP. Poderia me informar, por favor?",
+  "pagamento": "Aceitamos diversas formas de pagamento, incluindo PIX, cartão de crédito e boleto. Qual você prefere?",
+  "pix": "Sim, aceitamos PIX! Posso te enviar a chave para prosseguirmos com a compra.",
+  "cartão": "Aceitamos cartão de crédito das principais bandeiras. Você pode parcelar em até 12x sem juros.",
+  "boleto": "O pagamento por boleto bancário tem um prazo de até 3 dias úteis para compensação.",
+  "desconto": "Nossos preços já são bastante competitivos, mas posso verificar se há alguma promoção ativa para você.",
+  "entrega": "O prazo de entrega varia de acordo com a sua localização. Qual o seu CEP?",
+  "garantia": "Todos os nossos produtos possuem garantia de 90 dias contra defeitos de fabricação.",
+  "suporte": "Para suporte técnico, você pode entrar em contato com nossa equipe especializada pelo telefone (XX) XXXX-XXXX ou e-mail suporte@tecnoplace.com.br.",
+  "cancelar": "Para cancelar um pedido, por favor, entre em contato com nosso atendimento ao cliente. Eles irão te auxiliar com o processo.",
+  "devolução": "Você pode solicitar a devolução do produto em até 7 dias após o recebimento, conforme o Código de Defesa do Consumidor.",
+  "rastrear": "Para rastrear seu pedido, por favor, insira o código de rastreamento na seção 'Meus Pedidos' do nosso site.",
+  "contato": "Você pode nos contatar pelo telefone (XX) XXXX-XXXX, e-mail contato@tecnoplace.com.br ou através do chat em nosso site.",
+  "horário": "Nosso horário de atendimento é de segunda a sexta, das 9h às 18h.",
+  "endereço": "Nosso endereço é Rua Exemplo, 123, Bairro Centro, Cidade, Estado. Atendemos apenas online.",
+  "obrigado": "De nada! Se precisar de mais alguma coisa, é só chamar.",
+  "ajuda": "Claro, estou aqui para ajudar! Qual a sua dúvida?",
+  "problema": "Por favor, descreva o problema em mais detalhes para que eu possa te ajudar melhor.",
+  "site": "Você pode encontrar mais informações e todos os nossos produtos em nosso site: www.tecnoplace.com.br.",
+  "promoção": "Fique de olho em nosso site e redes sociais para não perder nossas promoções e ofertas especiais!",
+  "qualidade": "Trabalhamos apenas com produtos de alta qualidade e fornecedores confiáveis para garantir a sua satisfação.",
+  "configuração": "Para configurar a API do ChatGPT, clique no botão de engrenagem no canto inferior esquerdo da tela.",
+  "bot": "Eu sou um assistente virtual, programado para ajudar com suas dúvidas sobre o Tecnoplace."
+};
+
 const CHATGPT_CONFIG = {
   apiKey: localStorage.getItem('chatgpt_api_key') || '',
   model: 'gpt-3.5-turbo',
@@ -534,6 +555,16 @@ const CHATGPT_CONFIG = {
 };
 
 // Mostrar indicador de digitação do ChatGPT
+function verificarPalavrasChave(mensagem) {
+  const mensagemNormalizada = mensagem.toLowerCase();
+  for (const palavraChave in RESPOSTAS_AUTOMATICAS) {
+    if (mensagemNormalizada.includes(palavraChave)) {
+      return RESPOSTAS_AUTOMATICAS[palavraChave];
+    }
+  }
+  return null;
+}
+
 function mostrarIndicadorDigitacao() {
   const container = document.getElementById('mensagensArea');
   const indicador = document.createElement('div');
