@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tecnoplace</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" href="https://img.freepik.com/vetores-gratis/vetor-de-icone-de-cerebro-de-conexao-de-tecnologia-de-ia-no-conceito-roxo-de-transformacao-digital_53876-112219.jpg">
+</head>
+<body>
+
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+  <!-- NAVBAR -->
+  <header>
+    <div style="display: flex; align-items: center;">
+      <i class="fas fa-bars menu-icon" onclick="toggleSidebar()"></i>
+      <div class="logo" style="color: #4A00E0;">Tecnoplace</div>
+    </div>
+    
+    <div class="topnav">
+      <div class="nav-links">
+        <a class="active" href="index.html">Home</a>
+       <a href="meus-anuncios.html">Meus Anúncios</a>
+        <a href="mensagens.html">Mensagens</a>
+        <a href="login.html">Minha Conta</a>
+        <a href="sobre-nos.html">Sobre Nós</a>
+      </div>
+          
+      <div class="search-container">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Buscar peças...">
+          <div class="search-btn" onclick="buscarProdutos()">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+        <div class="cart-container">
+          <i class="fas fa-shopping-cart" onclick="toggleCart()"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </div>
+        <div class="user-avatar-header" id="userAvatarHeader" onclick="toggleUserMenu()">
+          <img id="userAvatarHeaderImg" src="" alt="Foto do usuário" style="display: none;">
+          <i class="fas fa-circle-user" id="userAvatarHeaderIcon"></i>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+    <a href="#categorias"><i class="fas fa-list"></i> Categorias</a>
+    <a href="meus-anuncios.html"><i class="fas fa-tag"></i> Meus Anúncios</a>
+    <a href="mensagens.html"><i class="fas fa-envelope"></i> Mensagens</a>
+    <a href="login.html"><i class="fas fa-user"></i> Minha Conta</a>
+    <a href="sobre-nos.html"><i class="fas fa-users"></i> Sobre Nós</a>
+  </div>
+
+  <!-- Banner Promocional Rotativo -->
+  <div class="banner-container">
+    <div class="banner-slide active">
+      <img src="img/BEM VINDO AO.png" alt="Banner 1">
+    </div>
+    <div class="banner-slide">
+      <img src="img/banner monitores.png" alt="Banner 2">
+    </div>
+    <div class="banner-slide">
+      <img src="img/banner mouse.png" alt="Banner 3">
+    </div>
+    <div class="banner-indicators">
+      <span class="indicator active" onclick="currentSlide(1)"></span>
+      <span class="indicator" onclick="currentSlide(2)"></span>
+      <span class="indicator" onclick="currentSlide(3)"></span>
+    </div>
+  </div>
+
+  <!-- Produtos em Promoção -->
+  <section class="produtos-destaque" id="promocoes">
+    <h2 class="section-title">Produtos em até 70% Off</h2>
+    <div class="produtos-grid" id="produtosPromocao">
+      <!-- Produtos serão carregados dinamicamente -->
+    </div>
+  </section>
+
+  <!-- Categorias em destaque -->
+  <div class="categorias-section" id="categorias">
+    <h2 class="section-title">Categorias</h2>
+    <div class="categorias-grid">
+      <div class="categoria-card" onclick="filtrarPorCategoria('processadores')">
+        <i class="fas fa-microchip"></i>
+        <h3>Processadores</h3>
+        <div class="item-count">324 itens</div>
+        <p>AMD, Intel e mais</p>
+      </div>
+      <div class="categoria-card" onclick="filtrarPorCategoria('memoria')">
+        <i class="fas fa-memory"></i>
+        <h3>Memória RAM</h3>
+        <div class="item-count">156 itens</div>
+        <p>DDR4, DDR5 e mais</p>
+      </div>
+      <div class="categoria-card" onclick="filtrarPorCategoria('armazenamento')">
+        <i class="fas fa-hdd"></i>
+        <h3>Armazenamento</h3>
+        <div class="item-count">278 itens</div>
+        <p>SSDs e HDs</p>
+      </div>
+      <div class="categoria-card" onclick="filtrarPorCategoria('placas-video')">
+        <i class="fas fa-desktop"></i>
+        <h3>Placas de Vídeo</h3>
+        <div class="item-count">198 itens</div>
+        <p>NVIDIA, AMD e mais</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seção de Produtos em Destaque -->
+  <section class="produtos-destaque">
+    <h2 class="section-title">Produtos em Destaque</h2>
+    <div class="produtos-grid" id="produtosDestaque">
+      <!-- Produtos serão carregados dinamicamente -->
+    </div>
+  </section>
+
+  <!-- Seção de Feedbacks -->
+  <div class="feedbacks-section">
+    <h2 class="section-title">O que nossos clientes dizem</h2>
+    <div class="feedbacks-slider">
+      <div class="feedback-item">
+        <div class="feedback-avatar">
+          <img src="img/Foto Felipe.jpg" alt="Felipe">
+        </div>
+        <div class="feedback-content">
+          <div class="feedback-stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="feedback-text">"Comprei meu processador aqui e foi uma experiência incrível! Entrega rápida e produto em perfeito estado. Recomendo muito!"</p>
+          <h4 class="feedback-name">Felipe Moura</h4>
+          <span class="feedback-location">São Paulo, SP</span>
+        </div>
+      </div>
+      
+      <div class="feedback-item">
+        <div class="feedback-avatar">
+          <img src="img/Foto Gabriel.jpg" alt="Gabriel">
+        </div>
+        <div class="feedback-content">
+          <div class="feedback-stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="feedback-text">"Melhor marketplace de tecnologia que já usei! Preços justos e vendedores confiáveis. Já montei meu PC todo aqui."</p>
+          <h4 class="feedback-name">Gabriel Freire</h4>
+          <span class="feedback-location">Rio de Janeiro, RJ</span>
+        </div>
+      </div>
+      
+      <div class="feedback-item">
+        <div class="feedback-avatar">
+          <img src="img/foto Plínio.jpg" alt="Plínio">
+        </div>
+        <div class="feedback-content">
+          <div class="feedback-stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="feedback-text">"Suporte excelente e produtos de qualidade! Consegui encontrar peças raras que não achava em lugar nenhum."</p>
+          <h4 class="feedback-name">Plínio Sanchez</h4>
+          <span class="feedback-location">Belo Horizonte, MG</span>
+        </div>
+      </div>
+      
+      <div class="feedback-item">
+        <div class="feedback-avatar">
+          <img src="img/jonatas.jpg" alt="Nikole">
+        </div>
+        <div class="feedback-content">
+          <div class="feedback-stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="feedback-text">"Interface muito intuitiva e segura! Comprei minha placa de vídeo e o processo foi super tranquilo. 5 estrelas!"</p>
+          <h4 class="feedback-name">Jonatas Cruz</h4>
+          <span class="feedback-location">Pindamonhangaba, SP</span>
+        </div>
+      </div>
+      
+      <div class="feedback-item">
+        <div class="feedback-avatar">
+          <img src="img/danilo.png" alt="Miguel">
+        </div>
+        <div class="feedback-content">
+          <div class="feedback-stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="feedback-text">"Frete grátis e entrega no mesmo dia! Vendedor muito atencioso e produto exatamente como anunciado. Top demais!"</p>
+          <h4 class="feedback-name">Danilo Passos</h4>
+          <span class="feedback-location">Taubaté,SP</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seção de Newsletter -->
+  <section class="newsletter-section">
+    <div class="newsletter-content">
+      <h2>Fique por dentro das novidades</h2>
+      <p>Receba ofertas exclusivas e novidades em primeira mão</p>
+      <form class="newsletter-form" onsubmit="inscreverNewsletter(event)">
+        <input type="email" id="emailNewsletter" placeholder="Digite seu email" required>
+        <button type="submit">Inscreva-se</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Seção de Diferenciais -->
+  <div class="diferenciais-section">
+    <div class="diferencial-item">
+      <i class="fas fa-shield-alt"></i>
+      <h3>Compra segura</h3>
+      <p>Pagamento 100% seguro</p>
+    </div>
+    <div class="diferencial-item">
+      <i class="fas fa-headset"></i>
+      <h3>Suporte 24/7</h3>
+      <p>Atendimento especializado</p>
+    </div>
+    <div class="diferencial-item">
+      <i class="fas fa-truck"></i>
+      <h3>Entrega rápida</h3>
+      <p>Frete grátis acima de R$ 200</p>
+    </div>
+  </div>
+
+  <!-- Modal do Carrinho -->
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-content">
+      <div class="cart-header">
+        <h3>Carrinho de Compras</h3>
+        <span class="close-cart" onclick="toggleCart()">&times;</span>
+      </div>
+      <div class="cart-items" id="cartItems">
+        <!-- Itens do carrinho serão carregados aqui -->
+      </div>
+      <div class="cart-footer">
+        <div class="cart-total">
+          <strong>Total: R$ <span id="cartTotal">0,00</span></strong>
+        </div>
+        <button class="btn-finalizar" onclick="finalizarCompra()">Finalizar Compra</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Produto -->
+  <div class="product-modal" id="productModal">
+    <div class="product-modal-content">
+      <span class="close-modal" onclick="closeProductModal()">&times;</span>
+      <div class="product-modal-body" id="productModalBody">
+        <!-- Conteúdo do produto será carregado aqui -->
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Sobre o Tecnoplace</h3>
+        <p>Marketplace especializado em peças de computador e tecnologia. Conectamos vendedores e compradores de forma segura e confiável.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Links Úteis</h3>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#categorias">Categorias</a></li>
+          <li><a href="#sobre">Sobre Nós</a></li>
+          <li><a href="contato.html">Contato</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contato</h3>
+        <p><i class="fas fa-envelope"></i> tecnoplaceoficialbr@gmail.com</p>
+        <p><i class="fas fa-phone"></i> (xx) xxxx-xxxx</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Tecnoplace. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/script.js"></script>
+  
+  
+  <!-- VLibras -->
+  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
+  
+</body>
+</html>
+
