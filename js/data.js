@@ -237,8 +237,8 @@ const DATABASE = {
         imagem: "https://via.placeholder.com/300x300/1F2937/FFFFFF?text=Samsung+SSD",
         tag: "Oferta",
         vendedor: {
-          nome: "Digital Parts",
-          foto: "https://via.placeholder.com/50x50/333/FFF?text=DP",
+          nome: "Danilo Passsos",
+          foto: "img/danilo.png",
           rating: 4.8,
           avaliacoes: 198
         },
