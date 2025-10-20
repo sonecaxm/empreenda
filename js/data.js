@@ -85,7 +85,7 @@ const DATABASE = {
         },
         estoque: 15,
         promocao: true,
-        destaque: false
+        destaque: true
       },
       {
         id: 2,
@@ -252,7 +252,7 @@ const DATABASE = {
         },
         estoque: 12,
         promocao: false,
-        destaque: true
+        destaque: false
       },
       {
         id: 8,
